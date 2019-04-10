@@ -92,6 +92,14 @@ class TableBody extends React.Component {
     return expandedRows.lookup && expandedRows.lookup[dataIndex] ? true : false;
   }
 
+  isRowExpandable(rowData, rowMeta){
+    const {options} = this.props;
+    if(options.isRowExpandable){
+      return options.isRowExpandable(rowData, rowMeta);
+    }
+    return false;
+  }
+
   isRowSelectable(dataIndex) {
     const { options } = this.props;
     if (options.isRowSelectable) {
@@ -139,7 +147,7 @@ class TableBody extends React.Component {
                   })}
                   fixedHeader={options.fixedHeader}
                   checked={this.isRowSelected(dataIndex)}
-                  expandableOn={options.expandableRows}
+                  expandableOn={options.expandableRows || this.isRowExpandable(row, { rowIndex, dataIndex })}
                   selectableOn={options.selectableRows}
                   isRowExpanded={this.isRowExpanded(dataIndex)}
                   isRowSelectable={this.isRowSelectable(dataIndex)}
